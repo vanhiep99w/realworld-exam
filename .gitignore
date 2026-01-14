@@ -1,0 +1,24 @@
+# LocalStack data
+localstack-data/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Build
+build/
+target/
+*.class
+*.jar
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local

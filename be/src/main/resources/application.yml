@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: realworld-example
+  datasource:
+    url: jdbc:postgresql://localhost:5432/realworld_example
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      auto-commit: false
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          fetch_size: 5000
+
+aws:
+  s3:
+    endpoint: http://localhost:4566
+    region: ap-southeast-1
+    bucket: demo-bucket
+    access-key: test
+    secret-key: test
