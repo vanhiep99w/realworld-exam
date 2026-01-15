@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as S3DemoRouteImport } from './routes/s3-demo'
+import { Route as ExportRouteImport } from './routes/export'
 import { Route as IndexRouteImport } from './routes/index'
 
 const S3DemoRoute = S3DemoRouteImport.update({
   id: '/s3-demo',
   path: '/s3-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExportRoute = ExportRouteImport.update({
+  id: '/export',
+  path: '/export',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/export': typeof ExportRoute
   '/s3-demo': typeof S3DemoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/export': typeof ExportRoute
   '/s3-demo': typeof S3DemoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/export': typeof ExportRoute
   '/s3-demo': typeof S3DemoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/s3-demo'
+  fullPaths: '/' | '/export' | '/s3-demo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/s3-demo'
-  id: '__root__' | '/' | '/s3-demo'
+  to: '/' | '/export' | '/s3-demo'
+  id: '__root__' | '/' | '/export' | '/s3-demo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExportRoute: typeof ExportRoute
   S3DemoRoute: typeof S3DemoRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/s3-demo'
       fullPath: '/s3-demo'
       preLoaderRoute: typeof S3DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/export': {
+      id: '/export'
+      path: '/export'
+      fullPath: '/export'
+      preLoaderRoute: typeof ExportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExportRoute: ExportRoute,
   S3DemoRoute: S3DemoRoute,
 }
 export const routeTree = rootRouteImport

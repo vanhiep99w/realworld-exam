@@ -35,6 +35,12 @@ public class ExportJob {
     private Instant startedAt;
     private Instant finishedAt;
 
+    // Metrics fields
+    private Long fileSizeBytes;
+    private Long uncompressedSizeBytes;
+    private Double rowsPerSecond;
+    private Long durationMs;
+
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
@@ -43,6 +49,15 @@ public class ExportJob {
         }
         if (processedRecords == null) {
             processedRecords = 0L;
+        }
+    }
+
+    public void calculateMetrics() {
+        if (startedAt != null && finishedAt != null) {
+            durationMs = finishedAt.toEpochMilli() - startedAt.toEpochMilli();
+            if (durationMs > 0 && totalRecords != null) {
+                rowsPerSecond = totalRecords * 1000.0 / durationMs;
+            }
         }
     }
 

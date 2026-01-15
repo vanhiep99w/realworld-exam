@@ -25,3 +25,15 @@ aws:
     bucket: demo-bucket
     access-key: test
     secret-key: test
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,info
+      cors:
+        allowed-origins: http://localhost:3000
+        allowed-methods: GET
+  endpoint:
+    health:
+      show-details: always

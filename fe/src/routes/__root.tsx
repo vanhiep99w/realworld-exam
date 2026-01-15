@@ -7,7 +7,8 @@ export const Route = createRootRoute({
     <>
       <nav style={{ padding: '10px', borderBottom: '1px solid #ccc', marginBottom: '20px' }}>
         <Link to="/" style={{ marginRight: '15px' }}>Home</Link>
-        <Link to="/s3-demo">S3 Demo</Link>
+        <Link to="/s3-demo" style={{ marginRight: '15px' }}>S3 Demo</Link>
+        <Link to="/export">Export Users</Link>
       </nav>
       <Outlet />
       <TanStackDevtools

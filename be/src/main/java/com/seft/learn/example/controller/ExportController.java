@@ -55,13 +55,21 @@ public class ExportController {
             String errorMessage,
             String createdAt,
             String startedAt,
-            String finishedAt
+            String finishedAt,
+            // Metrics
+            Long fileSizeBytes,
+            String fileSizeFormatted,
+            Long uncompressedSizeBytes,
+            String uncompressedSizeFormatted,
+            Double compressionPercent,
+            Double rowsPerSecond,
+            Long durationMs,
+            String durationFormatted
     ) {
         public static ExportJobResponse from(ExportJob job) {
-            Integer percent = null;
-            if (job.getTotalRecords() != null && job.getTotalRecords() > 0 && job.getProcessedRecords() != null) {
-                percent = (int) (job.getProcessedRecords() * 100 / job.getTotalRecords());
-            }
+            Integer percent = calculatePercent(job);
+            Double compression = calculateCompression(job);
+            
             return new ExportJobResponse(
                     job.getId(),
                     job.getStatus().name(),
@@ -70,10 +78,58 @@ public class ExportController {
                     percent,
                     job.getS3Key(),
                     job.getErrorMessage(),
-                    job.getCreatedAt() != null ? job.getCreatedAt().toString() : null,
-                    job.getStartedAt() != null ? job.getStartedAt().toString() : null,
-                    job.getFinishedAt() != null ? job.getFinishedAt().toString() : null
+                    formatInstant(job.getCreatedAt()),
+                    formatInstant(job.getStartedAt()),
+                    formatInstant(job.getFinishedAt()),
+                    job.getFileSizeBytes(),
+                    formatFileSize(job.getFileSizeBytes()),
+                    job.getUncompressedSizeBytes(),
+                    formatFileSize(job.getUncompressedSizeBytes()),
+                    compression,
+                    job.getRowsPerSecond(),
+                    job.getDurationMs(),
+                    formatDuration(job.getDurationMs())
             );
+        }
+
+        private static Integer calculatePercent(ExportJob job) {
+            if (job.getTotalRecords() != null && job.getTotalRecords() > 0 && job.getProcessedRecords() != null) {
+                return (int) (job.getProcessedRecords() * 100 / job.getTotalRecords());
+            }
+            return null;
+        }
+
+        private static Double calculateCompression(ExportJob job) {
+            if (job.getUncompressedSizeBytes() != null && job.getUncompressedSizeBytes() > 0 
+                    && job.getFileSizeBytes() != null) {
+                return (1 - (double) job.getFileSizeBytes() / job.getUncompressedSizeBytes()) * 100;
+            }
+            return null;
+        }
+
+        private static String formatInstant(java.time.Instant instant) {
+            return instant != null ? instant.toString() : null;
+        }
+
+        private static String formatFileSize(Long bytes) {
+            if (bytes == null) return null;
+            if (bytes >= 1024 * 1024) {
+                return String.format("%.2f MB", bytes / (1024.0 * 1024));
+            }
+            if (bytes >= 1024) {
+                return String.format("%.2f KB", bytes / 1024.0);
+            }
+            return bytes + " B";
+        }
+
+        private static String formatDuration(Long ms) {
+            if (ms == null) return null;
+            long seconds = ms / 1000;
+            long minutes = seconds / 60;
+            if (minutes > 0) {
+                return String.format("%dm %ds", minutes, seconds % 60);
+            }
+            return String.format("%ds", seconds);
         }
     }
 }
