@@ -459,3 +459,8 @@ Response khi export hoàn thành:
 - [PostgreSQL JDBC Streaming](https://jdbc.postgresql.org/documentation/head/query.html#query-with-cursor)
 - [Spring @Async](https://docs.spring.io/spring-framework/reference/integration/scheduling.html#scheduling-annotation-support-async)
 - [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html)
+
+---
+
+*Document created: 2026-01-13*
+*Project: realworld-exam*

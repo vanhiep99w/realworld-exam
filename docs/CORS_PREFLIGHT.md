@@ -268,5 +268,13 @@ Preflight **không cần biết** controller nào! Nó chỉ hỏi: "Method này
 
 ---
 
+## Official Documentation
+
+- [MDN - CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+- [MDN - Preflight Request](https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request)
+- [Fetch Spec - CORS Protocol](https://fetch.spec.whatwg.org/#http-cors-protocol)
+
+---
+
 *Document created: 2026-01-15*
 *Project: realworld-exam*

@@ -32,22 +32,22 @@ Danh sách các chủ đề S3 có thể học, sắp xếp theo độ khó và 
 
 ### Level 2: Intermediate (⭐⭐)
 
-| # | Topic | Description | Use Case |
-|---|-------|-------------|----------|
-| 11 | **S3 Object Lock** | WORM (Write Once Read Many) | Compliance, audit logs không thể xóa |
-| 12 | **S3 Replication (Same-Region)** | Copy objects sang bucket khác | Backup, log aggregation |
-| 13 | **S3 Inventory** | Report về objects trong bucket | Audit, compliance, cost analysis |
+| # | Topic | Description | Use Case | Docs |
+|---|-------|-------------|----------|------|
+| 11 | **S3 Object Lock** | WORM (Write Once Read Many) | Compliance, audit logs không thể xóa | [S3_OBJECT_LOCK.md](./S3_OBJECT_LOCK.md) |
+| 12 | **S3 Replication (Same-Region)** | Copy objects sang bucket khác | Backup, log aggregation | - |
+| 13 | **S3 Inventory** | Report về objects trong bucket | Audit, compliance, cost analysis | - |
 
 ### Level 3: Advanced (⭐⭐⭐)
 
-| # | Topic | Description | Use Case |
-|---|-------|-------------|----------|
-| 13 | **CloudFront + Signed URLs** | CDN distribution với authentication | Video streaming, global file delivery |
-| 14 | **S3 Cross-Region Replication** | DR/backup sang region khác | Disaster recovery, data residency |
-| 15 | **S3 Batch Operations** | Bulk operations trên millions objects | Mass copy, tagging, restore from Glacier |
-| 16 | **S3 Access Points** | Simplified access management | Multi-tenant apps, different access patterns |
-| 17 | **S3 Object Lambda** | Transform data on-the-fly | Redact PII, resize images on download |
-| 18 | **S3 Glacier Deep Archive** | Lowest cost archival storage | Long-term backup (retrieval 12-48h) |
+| # | Topic | Description | Use Case | Docs |
+|---|-------|-------------|----------|------|
+| 14 | **CloudFront + Signed URLs** | CDN distribution với authentication | Video streaming, global file delivery | - |
+| 15 | **S3 Cross-Region Replication** | DR/backup sang region khác | Disaster recovery, data residency | - |
+| 16 | **S3 Batch Operations** | Bulk operations trên millions objects | Mass copy, tagging, restore from Glacier | - |
+| 17 | **S3 Access Points** | Simplified access management | Multi-tenant apps, different access patterns | - |
+| 18 | **S3 Object Lambda** | Transform data on-the-fly | Redact PII, resize images on download | - |
+| 19 | **S3 Glacier Deep Archive** | Lowest cost archival storage | Long-term backup (retrieval 12-48h) | - |
 
 ---
 
