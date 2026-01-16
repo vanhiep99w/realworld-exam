@@ -1,0 +1,13 @@
+{
+  "aws-knowledge-mcp-server": {
+    "url": "https://knowledge-mcp.global.api.aws",
+    "type": "http",
+    "includeTools": [
+      "search_documentation",
+      "read_documentation",
+      "recommend",
+      "list_regions",
+      "get_regional_availability"
+    ]
+  }
+}
