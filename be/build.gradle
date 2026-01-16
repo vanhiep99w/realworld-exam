@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.1'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'net.ltgt.errorprone' version '4.1.0'
 }
 
 group = 'com.seft.learn'
@@ -38,8 +39,32 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// JSpecify null safety annotations
+	implementation 'org.jspecify:jspecify:1.0.0'
+
+	// NullAway + Error Prone
+	errorprone 'com.uber.nullaway:nullaway:0.12.4'
+	errorprone 'com.google.errorprone:error_prone_core:2.36.0'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// NullAway configuration
+import net.ltgt.gradle.errorprone.CheckSeverity
+
+tasks.withType(JavaCompile).configureEach {
+	options.errorprone {
+		check("NullAway", CheckSeverity.ERROR)
+		option("NullAway:AnnotatedPackages", "com.seft.learn")
+		option("NullAway:JSpecifyMode", "true")
+	}
+	// Disable NullAway on test code
+	if (name.toLowerCase().contains("test")) {
+		options.errorprone {
+			disable("NullAway")
+		}
+	}
 }

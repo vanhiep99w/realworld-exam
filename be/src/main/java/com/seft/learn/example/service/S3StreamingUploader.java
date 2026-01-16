@@ -2,6 +2,7 @@ package com.seft.learn.example.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -27,7 +28,7 @@ public class S3StreamingUploader {
     private final S3Client s3Client;
 
     @Value("${aws.s3.bucket}")
-    private String bucketName;
+    private String bucketName = "";
 
     private static final int PART_SIZE = 5 * 1024 * 1024; // 5MB minimum
     private static final int MAX_CONCURRENT_UPLOADS = 4;
@@ -64,7 +65,7 @@ public class S3StreamingUploader {
 
         private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         private final Writer writer;
-        private final GZIPOutputStream gzipStream;
+        private final @Nullable GZIPOutputStream gzipStream;
         private final List<CompletableFuture<CompletedPart>> pendingUploads = new ArrayList<>();
         private final List<CompletedPart> completedParts = new CopyOnWriteArrayList<>();
 

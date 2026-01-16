@@ -2,6 +2,7 @@ package com.seft.learn.example.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -37,19 +38,19 @@ public class S3PresignedUrlService {
 	private final S3Presigner s3Presigner;
 
 	@Value("${aws.s3.bucket}")
-	private String bucketName;
+	private String bucketName = "";
 
 	@Value("${aws.s3.endpoint}")
-	private String endpoint;
+	private String endpoint = "";
 
 	@Value("${aws.s3.region}")
-	private String region;
+	private String region = "";
 
 	@Value("${aws.s3.access-key}")
-	private String accessKey;
+	private String accessKey = "";
 
 	@Value("${aws.s3.secret-key}")
-	private String secretKey;
+	private String secretKey = "";
 
 	public String generatePresignedPutUrl(String key, String contentType, long fileSize) {
 		validateUpload(contentType, fileSize);

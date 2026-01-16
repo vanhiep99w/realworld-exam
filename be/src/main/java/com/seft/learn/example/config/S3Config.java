@@ -17,16 +17,16 @@ import java.net.URI;
 public class S3Config {
 
 	@Value("${aws.s3.endpoint}")
-	private String endpoint;
+	private String endpoint = "";
 
 	@Value("${aws.s3.region}")
-	private String region;
+	private String region = "";
 
 	@Value("${aws.s3.access-key}")
-	private String accessKey;
+	private String accessKey = "";
 
 	@Value("${aws.s3.secret-key}")
-	private String secretKey;
+	private String secretKey = "";
 
 	@Bean
 	public S3Client s3Client() {

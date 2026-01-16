@@ -6,6 +6,7 @@ import com.seft.learn.example.repository.ExportJobRepository;
 import com.seft.learn.example.service.export.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -146,7 +147,7 @@ public class ExportService {
         return bytes + " B";
     }
 
-    private void handleError(UUID jobId, S3StreamingUploader.StreamingUpload upload, Exception e) {
+    private void handleError(UUID jobId, S3StreamingUploader.@Nullable StreamingUpload upload, Exception e) {
         log.error("Export failed: jobId={}", jobId, e);
         
         if (upload != null) {
@@ -156,18 +157,18 @@ public class ExportService {
         ExportJob job = exportJobRepository.findById(jobId).orElse(null);
         if (job != null) {
             job.setStatus(ExportStatus.FAILED);
-            job.setErrorMessage(truncateError(e.getMessage()));
+            String errorMessage = e.getMessage();
+            job.setErrorMessage(truncateError(errorMessage != null ? errorMessage : "Unknown error"));
             job.setFinishedAt(Instant.now());
             exportJobRepository.save(job);
         }
     }
 
     private String truncateError(String message) {
-        if (message == null) return "Unknown error";
         return message.length() > 1000 ? message.substring(0, 1000) : message;
     }
 
-    public ExportJob getJob(UUID jobId) {
+    public @Nullable ExportJob getJob(UUID jobId) {
         return exportJobRepository.findById(jobId).orElse(null);
     }
 

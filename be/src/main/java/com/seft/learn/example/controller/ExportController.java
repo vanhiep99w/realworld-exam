@@ -2,7 +2,9 @@ package com.seft.learn.example.controller;
 
 import com.seft.learn.example.entity.ExportJob;
 import com.seft.learn.example.service.ExportService;
+import java.time.Instant;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,23 +50,23 @@ public class ExportController {
     public record ExportJobResponse(
             UUID id,
             String status,
-            Long totalRecords,
-            Long processedRecords,
-            Integer progressPercent,
-            String s3Key,
-            String errorMessage,
+            @Nullable Long totalRecords,
+            @Nullable Long processedRecords,
+            @Nullable Integer progressPercent,
+            @Nullable String s3Key,
+            @Nullable String errorMessage,
             String createdAt,
-            String startedAt,
-            String finishedAt,
+            @Nullable String startedAt,
+            @Nullable String finishedAt,
             // Metrics
-            Long fileSizeBytes,
-            String fileSizeFormatted,
-            Long uncompressedSizeBytes,
-            String uncompressedSizeFormatted,
-            Double compressionPercent,
-            Double rowsPerSecond,
-            Long durationMs,
-            String durationFormatted
+            @Nullable Long fileSizeBytes,
+            @Nullable String fileSizeFormatted,
+            @Nullable Long uncompressedSizeBytes,
+            @Nullable String uncompressedSizeFormatted,
+            @Nullable Double compressionPercent,
+            @Nullable Double rowsPerSecond,
+            @Nullable Long durationMs,
+            @Nullable String durationFormatted
     ) {
         public static ExportJobResponse from(ExportJob job) {
             Integer percent = calculatePercent(job);
@@ -79,8 +81,8 @@ public class ExportController {
                     job.getS3Key(),
                     job.getErrorMessage(),
                     formatInstant(job.getCreatedAt()),
-                    formatInstant(job.getStartedAt()),
-                    formatInstant(job.getFinishedAt()),
+                    formatNullableInstant(job.getStartedAt()),
+                    formatNullableInstant(job.getFinishedAt()),
                     job.getFileSizeBytes(),
                     formatFileSize(job.getFileSizeBytes()),
                     job.getUncompressedSizeBytes(),
@@ -92,26 +94,30 @@ public class ExportController {
             );
         }
 
-        private static Integer calculatePercent(ExportJob job) {
+        private static @Nullable Integer calculatePercent(ExportJob job) {
             if (job.getTotalRecords() != null && job.getTotalRecords() > 0 && job.getProcessedRecords() != null) {
                 return (int) (job.getProcessedRecords() * 100 / job.getTotalRecords());
             }
             return null;
         }
 
-        private static Double calculateCompression(ExportJob job) {
-            if (job.getUncompressedSizeBytes() != null && job.getUncompressedSizeBytes() > 0 
+        private static @Nullable Double calculateCompression(ExportJob job) {
+            if (job.getUncompressedSizeBytes() != null && job.getUncompressedSizeBytes() > 0
                     && job.getFileSizeBytes() != null) {
                 return (1 - (double) job.getFileSizeBytes() / job.getUncompressedSizeBytes()) * 100;
             }
             return null;
         }
 
-        private static String formatInstant(java.time.Instant instant) {
+        private static String formatInstant(Instant instant) {
+            return instant.toString();
+        }
+
+        private static @Nullable String formatNullableInstant(@Nullable Instant instant) {
             return instant != null ? instant.toString() : null;
         }
 
-        private static String formatFileSize(Long bytes) {
+        private static @Nullable String formatFileSize(@Nullable Long bytes) {
             if (bytes == null) return null;
             if (bytes >= 1024 * 1024) {
                 return String.format("%.2f MB", bytes / (1024.0 * 1024));
@@ -122,7 +128,7 @@ public class ExportController {
             return bytes + " B";
         }
 
-        private static String formatDuration(Long ms) {
+        private static @Nullable String formatDuration(@Nullable Long ms) {
             if (ms == null) return null;
             long seconds = ms / 1000;
             long minutes = seconds / 60;
