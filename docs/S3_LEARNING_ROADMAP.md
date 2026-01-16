@@ -20,13 +20,20 @@ Danh sách các chủ đề S3 có thể học, sắp xếp theo độ khó và 
 
 ---
 
+## 📋 Đã Document (Chưa Implement)
+
+| # | Topic | Description | Docs |
+|---|-------|-------------|------|
+| 10 | **S3 Transfer Acceleration** | Upload nhanh hơn qua CloudFront edge | [S3_TRANSFER_ACCELERATION.md](./S3_TRANSFER_ACCELERATION.md) |
+
+---
+
 ## 📚 Chưa Implement - Theo Thứ Tự Học
 
 ### Level 2: Intermediate (⭐⭐)
 
 | # | Topic | Description | Use Case |
 |---|-------|-------------|----------|
-| 10 | **S3 Transfer Acceleration** | Upload nhanh hơn qua CloudFront edge | Users ở xa region (VN → US bucket) |
 | 11 | **S3 Object Lock** | WORM (Write Once Read Many) | Compliance, audit logs không thể xóa |
 | 12 | **S3 Replication (Same-Region)** | Copy objects sang bucket khác | Backup, log aggregation |
 | 13 | **S3 Inventory** | Report về objects trong bucket | Audit, compliance, cost analysis |
