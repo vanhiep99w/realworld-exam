@@ -34,7 +34,9 @@
 | Large Data Export (10M+ rows) | `service/ExportService.java` | - | `docs/LARGE_DATA_EXPORT.md` |
 
 ## Documentation
-When implementing new features, create/update documentation in `docs/` folder with:
-- Overview and flow diagrams
-- Code examples for both BE and FE
-- Official documentation links
+When implementing new features, create/update documentation in `docs/` folder.
+
+**Use the `writing-docs` skill** (`.agents/skills/writing-docs/SKILL.md`) for:
+- Vietnamese documentation with proper structure
+- ASCII diagrams for simple flows, Mermaid for complex logic
+- Consistent formatting and style guidelines
