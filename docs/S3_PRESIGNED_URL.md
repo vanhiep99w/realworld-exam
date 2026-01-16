@@ -358,6 +358,119 @@ async function download(key: string) {
 
 ---
 
+## Upload Flow & Orphan Files Handling
+
+### Typical Upload Flow
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  FE Confirm Pattern (Phổ biến nhất)                             │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  1. FE request presigned URL từ BE                              │
+│  2. BE trả về URL + upload vào folder temp/                     │
+│  3. FE upload file lên S3 (temp/uuid.jpg)                       │
+│  4. S3 trả về 200 OK                                            │
+│  5. FE gọi BE: "Upload xong, file key là temp/uuid.jpg"         │
+│  6. BE move file: temp/uuid.jpg → avatars/user-1.jpg            │
+│  7. BE update DB với permanent key                              │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Folder Structure
+
+```
+bucket/
+├── temp/          ← FE upload vào đây (Lifecycle: xóa sau 24h)
+│   └── abc123.jpg    (file rác nếu không confirm)
+└── avatars/       ← BE move vào đây khi confirm
+    └── user-1.jpg    (permanent storage)
+```
+
+### Backend Confirm Upload
+
+```java
+public void confirmUpload(String tempKey, Long userId) {
+    String permanentKey = "avatars/user-" + userId + ".jpg";
+    
+    // Move file từ temp sang permanent
+    s3Client.copyObject(CopyObjectRequest.builder()
+        .sourceBucket(bucket)
+        .sourceKey(tempKey)
+        .destinationBucket(bucket)
+        .destinationKey(permanentKey)
+        .build());
+    
+    s3Client.deleteObject(DeleteObjectRequest.builder()
+        .bucket(bucket)
+        .key(tempKey)
+        .build());
+    
+    // Update DB
+    userRepository.updateAvatar(userId, permanentKey);
+}
+```
+
+### Orphan Files (File rác)
+
+**Vấn đề:** FE upload xong nhưng không confirm (crash, đóng tab, mất mạng) → file rác trong S3.
+
+**Giải pháp 1: Lifecycle Policy (Recommended)**
+
+```json
+{
+  "Rules": [{
+    "ID": "DeleteTempAfter24h",
+    "Filter": { "Prefix": "temp/" },
+    "Status": "Enabled",
+    "Expiration": { "Days": 1 }
+  }]
+}
+```
+
+→ AWS tự động xóa files trong `temp/` sau 24h.
+
+**Giải pháp 2: Cleanup Cron Job**
+
+```java
+@Scheduled(cron = "0 0 3 * * *")  // 3AM daily
+public void cleanupOrphanFiles() {
+    Instant cutoff = Instant.now().minus(24, ChronoUnit.HOURS);
+    
+    s3Client.listObjectsV2(req -> req.bucket(bucket).prefix("temp/"))
+        .contents()
+        .stream()
+        .filter(obj -> obj.lastModified().isBefore(cutoff))  // Chỉ files > 24h
+        .forEach(obj -> s3Client.deleteObject(bucket, obj.key()));
+}
+```
+
+**Lưu ý:** Chỉ xóa files **đủ cũ** (> 24h), không xóa files mới upload chưa kịp confirm.
+
+### Khi nào cần S3 Event Notifications?
+
+| Scenario | FE Confirm đủ? | Cần S3 Event? |
+|----------|----------------|---------------|
+| Web app đơn giản | ✅ Đủ | ❌ |
+| Mobile app (có thể bị kill) | ⚠️ Có thể miss | ✅ Backup |
+| Large file upload (user đóng tab) | ⚠️ Có thể miss | ✅ Backup |
+| Critical uploads | ❌ | ✅ Guaranteed |
+
+**Hybrid Pattern (cho reliability):**
+
+```
+FE upload → S3 OK → FE confirm BE    ← Happy path
+                │
+                └→ S3 Event → BE     ← Backup nếu FE fail
+
+BE check: "File này đã được confirm chưa?"
+→ Nếu chưa → process từ S3 Event
+→ Nếu rồi → ignore (duplicate)
+```
+
+---
+
 ## Lưu ý quan trọng
 
 1. **Presigned URL expiry**: Maximum 7 ngày (với IAM user), 36 giờ (với STS credentials)
