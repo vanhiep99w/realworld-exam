@@ -13,6 +13,21 @@ Write like you're talking to a colleague. Be conversational, not formal. Get peo
 
 All docs are saved in `docs/` folder with format: `FEATURE_NAME.md`
 
+## Available Tools
+ 
+- `search_documentation` - Search across all AWS
+- `read_documentation` - Retrieve and convert AWS 
+- `recommend` - Get content recommendations for AWS doc pages
+- `list_regions` - List all AWS regions with identifiers
+- `get_regional_availability` - Get regional availability for SDK APIs and CloudFormation resources
+
+### Workflow
+
+1. **Search** for relevant AWS documentation using `search_documentation`
+2. **Read** the full documentation page using `read_documentation`
+3. **Get recommendations** for related content using `recommend`
+4. **Write** documentation following the template structure above
+
 ## When Writing Documentation
 
 ### Start Here
@@ -113,10 +128,14 @@ All docs are saved in `docs/` folder with format: `FEATURE_NAME.md`
 ## Use Cases
 
 ### 1. [Use Case 1]
-[Mô tả ngắn gọn scenario]
+**Scenario:** [Mô tả ngắn gọn scenario]
+
+**Real-world example:** [Giải thích chi tiết ví dụ thực tế, công ty/ứng dụng nào dùng, tại sao]
 
 ### 2. [Use Case 2]
-[Mô tả ngắn gọn scenario]
+**Scenario:** [Mô tả ngắn gọn scenario]
+
+**Real-world example:** [Giải thích chi tiết ví dụ thực tế]
 
 ---
 

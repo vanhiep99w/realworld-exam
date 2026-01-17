@@ -25,6 +25,9 @@ Danh sách các chủ đề S3 có thể học, sắp xếp theo độ khó và 
 | # | Topic | Description | Docs |
 |---|-------|-------------|------|
 | 10 | **S3 Transfer Acceleration** | Upload nhanh hơn qua CloudFront edge | [S3_TRANSFER_ACCELERATION.md](./S3_TRANSFER_ACCELERATION.md) |
+| 11 | **S3 Object Lock** | WORM (Write Once Read Many) | [S3_OBJECT_LOCK.md](./S3_OBJECT_LOCK.md) |
+| 12 | **S3 Replication** | Copy objects sang bucket khác (SRR/CRR) | [S3_REPLICATION.md](./S3_REPLICATION.md) |
+| 13 | **CloudFront + Signed URLs** | CDN + authentication cho private content | [CLOUDFRONT_SIGNED_URLS.md](./CLOUDFRONT_SIGNED_URLS.md) |
 
 --- 
 
@@ -34,15 +37,12 @@ Danh sách các chủ đề S3 có thể học, sắp xếp theo độ khó và 
 
 | # | Topic | Description | Use Case | Docs |
 |---|-------|-------------|----------|------|
-| 11 | **S3 Object Lock** | WORM (Write Once Read Many) | Compliance, audit logs không thể xóa | [S3_OBJECT_LOCK.md](./S3_OBJECT_LOCK.md) |
-| 12 | **S3 Replication (Same-Region)** | Copy objects sang bucket khác | Backup, log aggregation | - |
-| 13 | **S3 Inventory** | Report về objects trong bucket | Audit, compliance, cost analysis | - |
+| 14 | **S3 Inventory** | Report về objects trong bucket | Audit, compliance, cost analysis | - |
 
 ### Level 3: Advanced (⭐⭐⭐)
 
 | # | Topic | Description | Use Case | Docs |
 |---|-------|-------------|----------|------|
-| 14 | **CloudFront + Signed URLs** | CDN distribution với authentication | Video streaming, global file delivery | - |
 | 15 | **S3 Cross-Region Replication** | DR/backup sang region khác | Disaster recovery, data residency | - |
 | 16 | **S3 Batch Operations** | Bulk operations trên millions objects | Mass copy, tagging, restore from Glacier | - |
 | 17 | **S3 Access Points** | Simplified access management | Multi-tenant apps, different access patterns | - |
