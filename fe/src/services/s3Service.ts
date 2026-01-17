@@ -1,4 +1,6 @@
-const API_BASE = 'http://localhost:8080/api/s3';
+import { apiClient, ApiRequestError } from './apiClient';
+
+const API_BASE = '/api/s3';
 
 export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 export const ALLOWED_CONTENT_TYPES = [
@@ -24,30 +26,22 @@ export interface S3File {
   lastModified: string;
 }
 
-export interface ErrorResponse {
-  error: string;
-}
+export { ApiRequestError };
 
 export async function getPresignedPutUrl(key: string, contentType: string, fileSize: number): Promise<PresignedUrlResponse> {
-  const res = await fetch(
-    `${API_BASE}/presigned-url/put?key=${encodeURIComponent(key)}&contentType=${encodeURIComponent(contentType)}&fileSize=${fileSize}`
+  const { data } = await apiClient.get<PresignedUrlResponse>(
+    `${API_BASE}/presigned-url/put`,
+    { params: { key, contentType, fileSize } }
   );
-  if (!res.ok) {
-    const err: ErrorResponse = await res.json();
-    throw new Error(err.error);
-  }
-  return res.json();
+  return data;
 }
 
 export async function getPresignedPostUrl(key: string, contentType: string): Promise<PresignedPostResponse> {
-  const res = await fetch(
-    `${API_BASE}/presigned-url/post?key=${encodeURIComponent(key)}&contentType=${encodeURIComponent(contentType)}`
+  const { data } = await apiClient.get<PresignedPostResponse>(
+    `${API_BASE}/presigned-url/post`,
+    { params: { key, contentType } }
   );
-  if (!res.ok) {
-    const err: ErrorResponse = await res.json();
-    throw new Error(err.error);
-  }
-  return res.json();
+  return data;
 }
 
 export async function uploadWithPut(url: string, file: File): Promise<void> {
@@ -70,20 +64,16 @@ export async function uploadWithPost(url: string, fields: Record<string, string>
 }
 
 export async function getPresignedGetUrl(key: string): Promise<PresignedUrlResponse> {
-  const res = await fetch(
-    `${API_BASE}/presigned-url/get?key=${encodeURIComponent(key)}`
+  const { data } = await apiClient.get<PresignedUrlResponse>(
+    `${API_BASE}/presigned-url/get`,
+    { params: { key } }
   );
-  if (!res.ok) {
-    const err: ErrorResponse = await res.json();
-    throw new Error(err.error);
-  }
-  return res.json();
+  return data;
 }
 
 export async function listFiles(): Promise<S3File[]> {
-  const res = await fetch(`${API_BASE}/files`);
-  if (!res.ok) throw new Error('Failed to list files');
-  return res.json();
+  const { data } = await apiClient.get<S3File[]>(`${API_BASE}/files`);
+  return data;
 }
 
 export function validateFile(file: File): string | null {

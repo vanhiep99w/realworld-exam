@@ -13,6 +13,14 @@ Danh sách các chủ đề CloudWatch Logs có thể học, sắp xếp theo đ
 
 ---
 
+## 📖 Đã Document
+
+| # | Topic | Description | Docs |
+|---|-------|-------------|------|
+| 4 | **Retention Policies** | Tự động xóa logs sau X ngày | [CLOUDWATCH_LOGS_RETENTION.md](./CLOUDWATCH_LOGS_RETENTION.md) |
+
+---
+
 ## 📋 Đã Document (Chưa Implement)
 
 | # | Topic | Description | Docs |
@@ -26,9 +34,7 @@ Danh sách các chủ đề CloudWatch Logs có thể học, sắp xếp theo đ
 
 ### Level 1: Foundation (⭐)
 
-| # | Topic | Description | Use Case |
-|---|-------|-------------|----------|
-| 4 | **Retention Policies** | Tự động xóa logs sau X ngày | Cost optimization |
+_(Đã hoàn thành - xem mục "Đã Document")_
 
 ### Level 2: Intermediate (⭐⭐)
 

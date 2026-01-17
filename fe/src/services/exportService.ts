@@ -1,4 +1,6 @@
-const API_BASE = 'http://localhost:8080/exports';
+import { apiClient } from './apiClient';
+
+const API_BASE = '/exports';
 
 export type ExportStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED';
 
@@ -35,28 +37,16 @@ export interface DownloadUrlResponse {
 }
 
 export async function startExport(): Promise<StartExportResponse> {
-  const res = await fetch(`${API_BASE}/users`, { method: 'POST' });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || 'Failed to start export');
-  }
-  return res.json();
+  const { data } = await apiClient.post<StartExportResponse>(`${API_BASE}/users`);
+  return data;
 }
 
 export async function getExportStatus(jobId: string): Promise<ExportJob> {
-  const res = await fetch(`${API_BASE}/${jobId}`);
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || 'Failed to get export status');
-  }
-  return res.json();
+  const { data } = await apiClient.get<ExportJob>(`${API_BASE}/${jobId}`);
+  return data;
 }
 
 export async function getDownloadUrl(jobId: string): Promise<DownloadUrlResponse> {
-  const res = await fetch(`${API_BASE}/${jobId}/download-url`);
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || 'Failed to get download URL');
-  }
-  return res.json();
+  const { data } = await apiClient.get<DownloadUrlResponse>(`${API_BASE}/${jobId}/download-url`);
+  return data;
 }

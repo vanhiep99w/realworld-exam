@@ -33,6 +33,7 @@ dependencies {
 	implementation 'software.amazon.awssdk:s3-transfer-manager:2.29.51'
 	implementation 'ca.pjer:logback-awslogs-appender:1.6.0'
 	implementation 'software.amazon.awssdk:cloudwatchlogs:2.29.51'
+	implementation 'net.logstash.logback:logstash-logback-encoder:8.0'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
