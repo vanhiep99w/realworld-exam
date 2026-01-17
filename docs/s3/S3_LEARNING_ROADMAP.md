@@ -34,20 +34,13 @@ Danh sách các chủ đề S3 có thể học, sắp xếp theo độ khó và 
 
 --- 
 
-## 📚 Chưa Implement - Theo Thứ Tự Học
+## ⏸️ Pending (Không cần doc/impl)
 
-### Level 2: Intermediate (⭐⭐)
-
-| # | Topic | Description | Use Case | Docs |
-|---|-------|-------------|----------|------|
-| 17 | **S3 Inventory** | Report về objects trong bucket | Audit, compliance, cost analysis | - |
-
-### Level 3: Advanced (⭐⭐⭐)
-
-| # | Topic | Description | Use Case | Docs |
-|---|-------|-------------|----------|------|
-| 18 | **S3 Cross-Region Replication** | DR/backup sang region khác | Disaster recovery, data residency | - |
-| 19 | **S3 Object Lambda** | Transform data on-the-fly | Redact PII, resize images on download | - |
+| # | Topic | Description | Use Case |
+|---|-------|-------------|----------|
+| 17 | **S3 Inventory** | Report về objects trong bucket | Audit, compliance, cost analysis |
+| 18 | **S3 Cross-Region Replication** | DR/backup sang region khác | Disaster recovery, data residency |
+| 19 | **S3 Object Lambda** | Transform data on-the-fly | Redact PII, resize images on download |
 
 ---
 
