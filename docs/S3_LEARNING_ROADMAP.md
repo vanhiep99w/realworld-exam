@@ -28,6 +28,9 @@ Danh sách các chủ đề S3 có thể học, sắp xếp theo độ khó và 
 | 11 | **S3 Object Lock** | WORM (Write Once Read Many) | [S3_OBJECT_LOCK.md](./S3_OBJECT_LOCK.md) |
 | 12 | **S3 Replication** | Copy objects sang bucket khác (SRR/CRR) | [S3_REPLICATION.md](./S3_REPLICATION.md) |
 | 13 | **CloudFront + Signed URLs** | CDN + authentication cho private content | [CLOUDFRONT_SIGNED_URLS.md](./CLOUDFRONT_SIGNED_URLS.md) |
+| 14 | **S3 Access Points** | Simplified permissions + Multi-Region routing | [S3_ACCESS_POINTS.md](./S3_ACCESS_POINTS.md) |
+| 15 | **S3 Batch Operations** | Bulk operations trên millions objects (Ops/DevOps) | [S3_BATCH_OPERATIONS.md](./S3_BATCH_OPERATIONS.md) |
+| 16 | **S3 Glacier Deep Archive** | Lowest cost archival storage + Lifecycle | [S3_GLACIER_DEEP_ARCHIVE.md](./S3_GLACIER_DEEP_ARCHIVE.md) |
 
 --- 
 
@@ -37,17 +40,14 @@ Danh sách các chủ đề S3 có thể học, sắp xếp theo độ khó và 
 
 | # | Topic | Description | Use Case | Docs |
 |---|-------|-------------|----------|------|
-| 14 | **S3 Inventory** | Report về objects trong bucket | Audit, compliance, cost analysis | - |
+| 17 | **S3 Inventory** | Report về objects trong bucket | Audit, compliance, cost analysis | - |
 
 ### Level 3: Advanced (⭐⭐⭐)
 
 | # | Topic | Description | Use Case | Docs |
 |---|-------|-------------|----------|------|
-| 15 | **S3 Cross-Region Replication** | DR/backup sang region khác | Disaster recovery, data residency | - |
-| 16 | **S3 Batch Operations** | Bulk operations trên millions objects | Mass copy, tagging, restore from Glacier | - |
-| 17 | **S3 Access Points** | Simplified access management | Multi-tenant apps, different access patterns | - |
-| 18 | **S3 Object Lambda** | Transform data on-the-fly | Redact PII, resize images on download | - |
-| 19 | **S3 Glacier Deep Archive** | Lowest cost archival storage | Long-term backup (retrieval 12-48h) | - |
+| 18 | **S3 Cross-Region Replication** | DR/backup sang region khác | Disaster recovery, data residency | - |
+| 19 | **S3 Object Lambda** | Transform data on-the-fly | Redact PII, resize images on download | - |
 
 ---
 
