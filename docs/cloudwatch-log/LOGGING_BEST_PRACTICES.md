@@ -2,17 +2,76 @@
 
 ## Mục lục
 1. [Tổng quan](#tổng-quan)
-2. [Naming Convention](#naming-convention)
-3. [Môi trường và CloudWatch](#môi-trường-và-cloudwatch)
-4. [Console Logs vs CloudWatch](#console-logs-vs-cloudwatch)
-5. [Logging Levels](#logging-levels)
-6. [Disk Space và Log Rotation](#disk-space-và-log-rotation)
+2. [Log Formats](#log-formats)
+3. [Naming Convention](#naming-convention)
+4. [Môi trường và CloudWatch](#môi-trường-và-cloudwatch)
+5. [Console Logs vs CloudWatch](#console-logs-vs-cloudwatch)
+6. [Logging Levels](#logging-levels)
+7. [Disk Space và Log Rotation](#disk-space-và-log-rotation)
 
 ---
 
 ## Tổng quan
 
 Document này tổng hợp các best practices về logging trong production environments, bao gồm naming conventions, khi nào bật CloudWatch, cách quản lý log levels và disk space.
+
+---
+
+## Log Formats
+
+### Các format phổ biến
+
+| Format | Ví dụ | CloudWatch parsing |
+|--------|-------|-------------------|
+| **Plain text** | `2026-01-17 INFO Order created` | Chỉ có `@message`, phải dùng `parse` |
+| **JSON** | `{"level":"INFO","msg":"Order created"}` | ✅ Tự động tạo fields |
+| **Logfmt** | `level=INFO msg="Order created"` | Phải dùng `parse` |
+| **CSV** | `2026-01-17,INFO,Order created` | Phải dùng `parse` |
+
+### Plain text (default)
+
+```
+2026-01-17 10:25:18.294 INFO  [main] com.app.Service - Order created
+```
+
+**Query trong CloudWatch:**
+```sql
+# Phải pattern match trong @message
+filter @message like /ERROR/
+
+# Hoặc parse để extract fields
+parse @message "* * *  [*] * - *" as date, time, level, thread, logger, msg
+| filter level = "ERROR"
+```
+
+### JSON Structured Logging (recommended)
+
+```json
+{"timestamp":"2026-01-17T10:25:18","level":"INFO","logger":"com.app.Service","message":"Order created","userId":"123"}
+```
+
+**Query trong CloudWatch:**
+```sql
+# CloudWatch tự động tạo fields → query trực tiếp
+filter level = "ERROR" and userId = "123"
+```
+
+### So sánh
+
+| | Plain Text | JSON |
+|---|---|---|
+| **Setup** | Mặc định, không cần config | Cần config encoder |
+| **Đọc log thủ công** | ✅ Dễ đọc | ❌ Khó đọc |
+| **Query CloudWatch** | Phải dùng `parse` | ✅ Query trực tiếp fields |
+| **Thêm context** | Khó | ✅ Dễ (thêm fields) |
+| **Tương thích tools** | Chỉ text search | ✅ ELK, Datadog, Splunk |
+
+### Recommendation
+
+| Môi trường | Format | Lý do |
+|------------|--------|-------|
+| **Local/Dev** | Plain text | Dễ đọc trong console |
+| **Production** | JSON | Query dễ, thêm context, tương thích monitoring tools |
 
 ---
 

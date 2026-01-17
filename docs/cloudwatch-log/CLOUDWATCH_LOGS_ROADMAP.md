@@ -9,6 +9,7 @@ Danh sách các chủ đề CloudWatch Logs có thể học, sắp xếp theo đ
 | # | Topic | Description | Docs |
 |---|-------|-------------|------|
 | 1 | **Log Groups & Streams + Push Logs** | Cấu trúc cơ bản + Custom Logback Appender | [CLOUDWATCH_LOGS_GROUPS_STREAMS.md](./CLOUDWATCH_LOGS_GROUPS_STREAMS.md) |
+| 3 | **Log Insights Query** | Query logs với SQL-like syntax | [CLOUDWATCH_LOGS_INSIGHTS.md](./CLOUDWATCH_LOGS_INSIGHTS.md) |
 
 ---
 
@@ -27,7 +28,6 @@ Danh sách các chủ đề CloudWatch Logs có thể học, sắp xếp theo đ
 
 | # | Topic | Description | Use Case |
 |---|-------|-------------|----------|
-| 3 | **Log Insights Query** | Query logs với SQL-like syntax | Debug, search errors |
 | 4 | **Retention Policies** | Tự động xóa logs sau X ngày | Cost optimization |
 
 ### Level 2: Intermediate (⭐⭐)
