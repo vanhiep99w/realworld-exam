@@ -5,12 +5,14 @@ import com.seft.learn.example.dto.PresignedUrlResponse;
 import com.seft.learn.example.dto.S3FileDto;
 import com.seft.learn.example.service.S3PresignedUrlService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/s3")
 @RequiredArgsConstructor
@@ -24,10 +26,13 @@ public class S3Controller {
 			@RequestParam String key,
 			@RequestParam(defaultValue = "application/octet-stream") String contentType,
 			@RequestParam long fileSize) {
+		log.info("Presigned PUT URL requested for key: {}, contentType: {}, fileSize: {}", key, contentType, fileSize);
 		try {
 			String url = s3Service.generatePresignedPutUrl(key, contentType, fileSize);
+			log.info("Presigned PUT URL generated for key: {}", key);
 			return ResponseEntity.ok(new PresignedUrlResponse(url, key));
 		} catch (IllegalArgumentException e) {
+			log.warn("Presigned PUT URL failed for key: {} - {}", key, e.getMessage());
 			return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
 		}
 	}
@@ -36,26 +41,33 @@ public class S3Controller {
 	public ResponseEntity<?> getPresignedPostUrl(
 			@RequestParam String key,
 			@RequestParam String contentType) {
+		log.info("Presigned POST URL requested for key: {}, contentType: {}", key, contentType);
 		try {
 			var result = s3Service.generatePresignedPostUrl(key, contentType);
+			log.info("Presigned POST URL generated for key: {}", result.key());
 			return ResponseEntity.ok(new PresignedPostResponse(result.url(), result.fields(), result.key()));
 		} catch (IllegalArgumentException e) {
+			log.warn("Presigned POST URL failed for key: {} - {}", key, e.getMessage());
 			return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
 		}
 	}
 
 	@GetMapping("/presigned-url/get")
 	public ResponseEntity<?> getPresignedGetUrl(@RequestParam String key) {
+		log.info("Presigned GET URL requested for key: {}", key);
 		try {
 			String url = s3Service.generatePresignedGetUrl(key);
+			log.info("Presigned GET URL generated for key: {}", key);
 			return ResponseEntity.ok(new PresignedUrlResponse(url, key));
 		} catch (Exception e) {
+			log.warn("Presigned GET URL failed for key: {} - {}", key, e.getMessage());
 			return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
 		}
 	}
 
 	@GetMapping("/upload-constraints")
 	public Map<String, Object> getUploadConstraints() {
+		log.debug("Upload constraints requested");
 		return Map.of(
 				"maxFileSize", S3PresignedUrlService.getMaxFileSize(),
 				"allowedContentTypes", S3PresignedUrlService.getAllowedContentTypes()
@@ -64,11 +76,14 @@ public class S3Controller {
 
 	@GetMapping("/files")
 	public List<S3FileDto> listFiles() {
-		return s3Service.listFiles().stream()
+		log.info("Listing S3 files");
+		var files = s3Service.listFiles().stream()
 				.map(obj -> new S3FileDto(
 						obj.key(),
 						obj.size(),
 						obj.lastModified().toString()))
 				.toList();
+		log.info("Listed {} files from S3", files.size());
+		return files;
 	}
 }

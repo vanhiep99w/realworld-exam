@@ -8,7 +8,7 @@ Danh sách các chủ đề CloudWatch Logs có thể học, sắp xếp theo đ
 
 | # | Topic | Description | Docs |
 |---|-------|-------------|------|
-| - | - | - | - |
+| 1 | **Log Groups & Streams + Push Logs** | Cấu trúc cơ bản + Custom Logback Appender | [CLOUDWATCH_LOGS_GROUPS_STREAMS.md](./CLOUDWATCH_LOGS_GROUPS_STREAMS.md) |
 
 ---
 
@@ -16,7 +16,8 @@ Danh sách các chủ đề CloudWatch Logs có thể học, sắp xếp theo đ
 
 | # | Topic | Description | Docs |
 |---|-------|-------------|------|
-| - | - | - | - |
+| 0 | **Introduction** | CloudWatch Logs là gì, so sánh với ELK/S3 | [CLOUDWATCH_LOGS_INTRODUCTION.md](./CLOUDWATCH_LOGS_INTRODUCTION.md) |
+| - | **Logging Best Practices** | Naming, levels, disk space, môi trường | [LOGGING_BEST_PRACTICES.md](./LOGGING_BEST_PRACTICES.md) |
 
 --- 
 
@@ -26,8 +27,6 @@ Danh sách các chủ đề CloudWatch Logs có thể học, sắp xếp theo đ
 
 | # | Topic | Description | Use Case |
 |---|-------|-------------|----------|
-| 1 | **Log Groups & Streams** | Cấu trúc cơ bản của CloudWatch Logs | Organize logs theo application/environment |
-| 2 | **Push Logs từ Application** | Gửi logs từ Spring Boot → CloudWatch | Centralized logging |
 | 3 | **Log Insights Query** | Query logs với SQL-like syntax | Debug, search errors |
 | 4 | **Retention Policies** | Tự động xóa logs sau X ngày | Cost optimization |
 

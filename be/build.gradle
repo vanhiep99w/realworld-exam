@@ -31,6 +31,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'software.amazon.awssdk:s3:2.29.51'
 	implementation 'software.amazon.awssdk:s3-transfer-manager:2.29.51'
+	implementation 'ca.pjer:logback-awslogs-appender:1.6.0'
+	implementation 'software.amazon.awssdk:cloudwatchlogs:2.29.51'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'

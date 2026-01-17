@@ -25,6 +25,9 @@ aws:
     bucket: demo-bucket
     access-key: test
     secret-key: test
+  cloudwatch:
+    endpoint: http://localhost:4566
+    log-group-name: spring-boot-app
 
 management:
   endpoints:
