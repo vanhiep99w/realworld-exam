@@ -3,9 +3,10 @@
 ## Mục lục
 1. [CloudWatch Logs là gì](#cloudwatch-logs-là-gì)
 2. [Tại sao cần CloudWatch Logs](#tại-sao-cần-cloudwatch-logs)
-3. [So sánh với ELK Stack](#so-sánh-với-elk-stack)
-4. [So sánh với S3](#so-sánh-với-s3)
-5. [Tài liệu tham khảo](#tài-liệu-tham-khảo)
+3. [Supported Log Formats](#supported-log-formats)
+4. [So sánh với ELK Stack](#so-sánh-với-elk-stack)
+5. [So sánh với S3](#so-sánh-với-s3)
+6. [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 ---
 
@@ -53,6 +54,48 @@ Không có CloudWatch Logs:
 | Giữ logs 90 ngày cho audit | Retention Policy tự động xóa logs cũ |
 
 **Tóm lại:** Thay vì SSH vào từng server xem logs, bạn có 1 nơi duy nhất để search, query, và alert.
+
+---
+
+## Supported Log Formats
+
+CloudWatch Logs hỗ trợ **3 loại log format** cho filter patterns:
+
+| Format | Mô tả | Ví dụ |
+|--------|-------|-------|
+| **Unstructured (Text)** | Plain text, free-form | `[ERROR] Connection failed` |
+| **JSON** | Structured JSON objects | `{"level": "ERROR", "msg": "..."}` |
+| **Space-delimited** | Fields phân cách bởi space (Apache/Nginx logs) | `127.0.0.1 - frank [10/Oct] "GET /" 404` |
+
+### Filter Pattern cho từng format
+
+**Unstructured Text:**
+```
+ERROR                           # Match logs chứa "ERROR"
+ERROR -DEBUG                    # Chứa "ERROR" nhưng không chứa "DEBUG"
+```
+
+**JSON:**
+```
+{ $.level = "ERROR" }                    # Match field level = ERROR
+{ $.statusCode >= 400 && $.statusCode < 500 }  # Match 4xx errors
+```
+
+**Space-delimited:**
+```
+[ip, id, user, timestamp, request, status_code=404, size]
+```
+
+### Regex Support
+
+Ngoài 3 format trên, CloudWatch Logs hỗ trợ **Regex** (syntax: `%pattern%`) để match pattern phức tạp:
+
+```
+%ERROR|WARN%                    # Match ERROR hoặc WARN
+%\d{3}\.\d{3}\.\d{3}\.\d{3}%    # Match IP address
+```
+
+> **Lưu ý:** CloudWatch Logs **không hỗ trợ** XML, CSV, hoặc custom delimiters - phải xử lý như unstructured text.
 
 ---
 

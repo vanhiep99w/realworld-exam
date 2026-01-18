@@ -14,6 +14,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/exports")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ExportController {
 
     private final ExportService exportService;

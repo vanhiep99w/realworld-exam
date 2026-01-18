@@ -17,7 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
+import org.slf4j.MDC;
 import java.util.zip.GZIPOutputStream;
 
 @Component
@@ -73,13 +75,29 @@ public class S3StreamingUploader {
         private long totalBytes = 0;
         private long uncompressedBytes = 0;
 
+        private static ExecutorService createMdcAwareExecutor(int threads) {
+            Map<String, String> parentContext = MDC.getCopyOfContextMap();
+            return Executors.newFixedThreadPool(threads, r -> {
+                return new Thread(() -> {
+                    try {
+                        if (parentContext != null) {
+                            MDC.setContextMap(parentContext);
+                        }
+                        r.run();
+                    } finally {
+                        MDC.clear();
+                    }
+                });
+            });
+        }
+
         public StreamingUpload(S3Client s3Client, String bucket, String key, String uploadId, boolean gzipEnabled) {
             this.s3Client = s3Client;
             this.bucket = bucket;
             this.key = key;
             this.uploadId = uploadId;
             this.gzipEnabled = gzipEnabled;
-            this.uploadExecutor = Executors.newFixedThreadPool(MAX_CONCURRENT_UPLOADS);
+            this.uploadExecutor = createMdcAwareExecutor(MAX_CONCURRENT_UPLOADS);
 
             try {
                 if (gzipEnabled) {

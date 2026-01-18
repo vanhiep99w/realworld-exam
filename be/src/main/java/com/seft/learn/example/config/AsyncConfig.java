@@ -18,6 +18,7 @@ public class AsyncConfig {
 		executor.setMaxPoolSize(5);
 		executor.setQueueCapacity(10);
 		executor.setThreadNamePrefix("export-");
+		executor.setTaskDecorator(new MdcTaskDecorator());
 		executor.initialize();
 		return executor;
 	}

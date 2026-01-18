@@ -14,7 +14,73 @@
 
 ### Logs Insights là gì?
 
-CloudWatch Logs Insights là công cụ query logs với syntax tương tự SQL. Cho phép tìm kiếm, phân tích và visualize logs nhanh chóng.
+CloudWatch Logs Insights là công cụ **ad-hoc query** logs với syntax tương tự SQL. Cho phép tìm kiếm, phân tích và visualize logs nhanh chóng.
+
+**Ad-hoc** = phân tích **tạm thời, theo nhu cầu** (không định kỳ, không tự động):
+
+```
+😱 Production lỗi lúc 3h sáng!
+     │
+     ▼
+🔍 Mở Logs Insights, viết query để tìm nguyên nhân:
+   "Có bao nhiêu lỗi 500? User nào bị? API nào lỗi?"
+     │
+     ▼
+✅ Tìm ra bug, fix xong, đóng Logs Insights
+
+→ Đây là AD-HOC: query 1 lần, không chạy lại tự động
+```
+
+### Logs Insights UI trong AWS Console
+
+```
+CloudWatch Console
+├── Dashboards
+├── Alarms
+├── Logs
+│   ├── Log groups
+│   ├── Log Insights  ◄─── Đây! Trang để viết query
+│   └── ...
+├── Metrics
+└── ...
+```
+
+**Giao diện:**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  CloudWatch > Logs > Logs Insights                                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  Select log group(s): [/app/my-service ▼]                           │
+│                                                                      │
+│  ┌────────────────────────────────────────────────────────────────┐ │
+│  │ fields @timestamp, @message                                    │ │
+│  │ | filter @message like /ERROR/                                 │ │
+│  │ | sort @timestamp desc                                         │ │
+│  │ | limit 20                                                     │ │
+│  └────────────────────────────────────────────────────────────────┘ │
+│                                                        [Run query]   │
+│                                                                      │
+│  ─────────────────── Results ───────────────────────────────────    │
+│  @timestamp              @message                                    │
+│  2026-01-18 10:05:32     ERROR - Connection timeout                 │
+│  2026-01-18 10:03:15     ERROR - Invalid token                      │
+│  ...                                                                 │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### So sánh với các công cụ khác
+
+| | Logs Insights (Ad-hoc) | Metric Filter | Subscription Filter |
+|--|------------------------|---------------|---------------------|
+| **Khi nào chạy** | Dev gõ query thủ công | Chạy liên tục 24/7 | Chạy liên tục 24/7 |
+| **Mục đích** | Debug, điều tra | Tạo metrics → Alarms | Stream logs ra ngoài |
+| **Output** | Bảng kết quả, chart | CloudWatch Metric | Lambda/Kinesis/S3 |
+| **Chi phí** | $0.0076/GB scanned | Miễn phí | Theo destination |
+| **Ví dụ** | "Tại sao user X lỗi?" | "Alert khi errors > 10" | "Gửi errors vào Slack" |
+
+### Flow tổng quan
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -508,6 +574,50 @@ parse @message "[*] * - *" as level, logger, message
 ### 5. Save useful queries
 
 Trong AWS Console, có thể save queries để reuse.
+
+---
+
+## Pricing
+
+### Chi phí Logs Insights
+
+| Thành phần | Chi phí |
+|------------|---------|
+| **Query** | $0.0076/GB data scanned |
+
+### So sánh với các công cụ khác
+
+| Công cụ | Chi phí |
+|---------|---------|
+| **Logs Insights** | $0.0076/GB scanned |
+| **Metric Filter** | Miễn phí |
+| **Subscription Filter** | Miễn phí (trả tiền destination) |
+
+### Ví dụ tính phí
+
+```
+Query 10GB logs  → 10 × $0.0076 = $0.076
+Query 100GB logs → 100 × $0.0076 = $0.76
+Query 1TB logs   → 1000 × $0.0076 = $7.60
+```
+
+### Tips tiết kiệm chi phí
+
+```sql
+# ❌ Tốn tiền: Query 30 ngày, lấy hết fields
+fields *
+| limit 1000
+
+# ✅ Tiết kiệm: Query 1 giờ, chỉ lấy fields cần
+fields @timestamp, @message
+| filter @message like /ERROR/
+| limit 100
+```
+
+**Nguyên tắc:**
+- Chọn **time range hẹp** nhất có thể
+- **Filter sớm** để giảm data scan
+- Chỉ lấy **fields cần thiết**
 
 ---
 

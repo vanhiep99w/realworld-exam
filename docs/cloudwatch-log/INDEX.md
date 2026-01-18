@@ -1,15 +1,25 @@
-# CloudWatch Logs Learning Roadmap
+# CloudWatch Logs - Index
 
-Danh sách các chủ đề CloudWatch Logs có thể học, sắp xếp theo độ khó và tính thực tế.
+Danh sách các chủ đề CloudWatch Logs, sắp xếp theo độ khó và tính thực tế.
 
 ---
+
+## 📋 Giới thiệu
+
+| # | Topic | Description | Docs |
+|---|-------|-------------|------|
+| 0 | **Introduction** | CloudWatch Logs là gì, so sánh với ELK/S3 | [CLOUDWATCH_LOGS_INTRODUCTION.md](./CLOUDWATCH_LOGS_INTRODUCTION.md) |
+| - | **Logging Best Practices** | Naming, levels, disk space, môi trường | [LOGGING_BEST_PRACTICES.md](./LOGGING_BEST_PRACTICES.md) |
+| - | **MDC (Mapped Diagnostic Context)** | Thread-local context cho logging | [MDC.md](./MDC.md) |
+
+--- 
 
 ## ✅ Đã Implement
 
 | # | Topic | Description | Docs |
 |---|-------|-------------|------|
 | 1 | **Log Groups & Streams + Push Logs** | Cấu trúc cơ bản + Custom Logback Appender | [CLOUDWATCH_LOGS_GROUPS_STREAMS.md](./CLOUDWATCH_LOGS_GROUPS_STREAMS.md) |
-| 3 | **Log Insights Query** | Query logs với SQL-like syntax | [CLOUDWATCH_LOGS_INSIGHTS.md](./CLOUDWATCH_LOGS_INSIGHTS.md) |
+| 2 | **Log Insights Query** | Query logs với SQL-like syntax | [CLOUDWATCH_LOGS_INSIGHTS.md](./CLOUDWATCH_LOGS_INSIGHTS.md) |
 
 ---
 
@@ -17,42 +27,22 @@ Danh sách các chủ đề CloudWatch Logs có thể học, sắp xếp theo đ
 
 | # | Topic | Description | Docs |
 |---|-------|-------------|------|
-| 4 | **Retention Policies** | Tự động xóa logs sau X ngày | [CLOUDWATCH_LOGS_RETENTION.md](./CLOUDWATCH_LOGS_RETENTION.md) |
+| 3 | **Retention Policies** | Tự động xóa logs sau X ngày | [CLOUDWATCH_LOGS_RETENTION.md](./CLOUDWATCH_LOGS_RETENTION.md) |
+| 4 | **Metric Filters** | Tạo metrics từ log patterns | [CLOUDWATCH_LOGS_METRIC_FILTERS.md](./CLOUDWATCH_LOGS_METRIC_FILTERS.md) |
+| 5 | **CloudWatch Alarms** | Alert khi metric vượt threshold | [CLOUDWATCH_ALARMS.md](./CLOUDWATCH_ALARMS.md) |
+| 6 | **Subscription Filters** | Stream logs to Lambda/Kinesis/S3 | [SUBSCRIPTION_FILTERS.md](./SUBSCRIPTION_FILTERS.md) |
+| 7 | **Structured Logging** | JSON logs, MDC context | [STRUCTURED_LOGGING.md](./STRUCTURED_LOGGING.md) |
+| 8 | **CloudWatch Logs Agent** | Push logs từ EC2/on-premise | [CLOUDWATCH_LOGS_AGENT.md](./CLOUDWATCH_LOGS_AGENT.md) |
+| 9 | **Contributor Insights** | Top-N analysis trên logs | [CONTRIBUTOR_INSIGHTS.md](./CONTRIBUTOR_INSIGHTS.md) |
+| 10 | **Export to S3** | Archive logs to S3 | [EXPORT_TO_S3.md](./EXPORT_TO_S3.md) |
 
 ---
 
-## 📋 Đã Document (Chưa Implement)
-
-| # | Topic | Description | Docs |
-|---|-------|-------------|------|
-| 0 | **Introduction** | CloudWatch Logs là gì, so sánh với ELK/S3 | [CLOUDWATCH_LOGS_INTRODUCTION.md](./CLOUDWATCH_LOGS_INTRODUCTION.md) |
-| - | **Logging Best Practices** | Naming, levels, disk space, môi trường | [LOGGING_BEST_PRACTICES.md](./LOGGING_BEST_PRACTICES.md) |
-
---- 
-
-## 📚 Chưa Implement - Theo Thứ Tự Học
-
-### Level 1: Foundation (⭐)
-
-_(Đã hoàn thành - xem mục "Đã Document")_
-
-### Level 2: Intermediate (⭐⭐)
+## 📚 Chưa Document
 
 | # | Topic | Description | Use Case |
 |---|-------|-------------|----------|
-| 5 | **Metric Filters** | Tạo metrics từ log patterns | Count errors, track specific events |
-| 6 | **CloudWatch Alarms** | Alert khi metric vượt threshold | PagerDuty, Slack notifications |
-| 7 | **Subscription Filters** | Stream logs to Lambda/Kinesis/S3 | Real-time processing, long-term storage |
-| 8 | **Log Format & Structured Logging** | JSON logs, MDC context | Better searchability |
-
-### Level 3: Advanced (⭐⭐⭐)
-
-| # | Topic | Description | Use Case |
-|---|-------|-------------|----------|
-| 9 | **Cross-Account Logging** | Aggregate logs từ multiple accounts | Enterprise, multi-account setup |
-| 10 | **CloudWatch Logs Agent** | Push logs từ EC2/on-premise | Legacy apps, system logs |
-| 11 | **Contributor Insights** | Top-N analysis trên logs | Find top users, top errors |
-| 12 | **Export to S3** | Archive logs to S3 | Long-term retention, compliance |
+| 11 | **Cross-Account Logging** | Aggregate logs từ multiple accounts | Enterprise, multi-account setup |
 
 ---
 
